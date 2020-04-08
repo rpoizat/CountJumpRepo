@@ -9,7 +9,12 @@ public class PlayerControleurScript : MonoBehaviour
     [SerializeField] private Rigidbody playerRigidbody;
     [SerializeField] private float playerSpeed;
     [SerializeField] private float playerJump;
+    [SerializeField]
+    private RewindList RewindComponent;
+    private Stack<GameObject> rewindList;
 
+    
+    public bool triggerRewind;
     private Ray scanJump;
     private Vector3 posRayCentre;
     private Vector3 posRayGauche;
@@ -19,13 +24,14 @@ public class PlayerControleurScript : MonoBehaviour
     public void ReplacePlayer(Vector3 position)
     {
         playerTransform.position = position;
+        
     }
 
     private void FixedUpdate()
     {
-        posRayCentre = new Vector3(playerTransform.position.x, playerTransform.position.y - 0.5f, playerTransform.position.z);
-        posRayGauche = new Vector3(playerTransform.position.x - playerTransform.localScale.x / 2, playerTransform.position.y - 0.5f, playerTransform.position.z);
-        posRayDroit = new Vector3(playerTransform.position.x + playerTransform.localScale.x / 2, playerTransform.position.y - 0.5f, playerTransform.position.z);
+        posRayCentre = new Vector3(playerTransform.position.x, playerTransform.position.y - 0.99f, playerTransform.position.z);
+        posRayGauche = new Vector3(playerTransform.position.x - playerTransform.localScale.x / 2, playerTransform.position.y - 0.99f, playerTransform.position.z);
+        posRayDroit = new Vector3(playerTransform.position.x + playerTransform.localScale.x / 2, playerTransform.position.y - 0.99f, playerTransform.position.z);
 
         if (!Physics.Raycast(posRayCentre, -playerTransform.up, 0.5f) && canJump == true)
         {
@@ -69,8 +75,10 @@ public class PlayerControleurScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        
+
         //avancer vers la droite
-        if(Input.GetKey(KeyCode.RightArrow))
+        if (Input.GetKey(KeyCode.RightArrow))
         {
             playerTransform.Translate(playerTransform.right * playerSpeed * Time.deltaTime);
         }
@@ -84,6 +92,33 @@ public class PlayerControleurScript : MonoBehaviour
         {
             playerRigidbody.AddForce(playerTransform.up * playerJump, ForceMode.Acceleration);
             canJump = false;
+            triggerRewind = true;
+        }
+
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            rewindList = RewindComponent.getRewindList();
+
+            if (rewindList.Count > 0 )
+            {
+
+                if (rewindList.Count == 1)
+                {
+                    Debug.Log("On tp");
+                    Transform plateform = rewindList.Peek().transform;
+                    ReplacePlayer(new Vector3(plateform.position.x, plateform.position.y + 2f, plateform.position.z));
+                }
+
+                else
+                {
+                    rewindList.Pop();
+                    Debug.Log("On tp");
+                    Transform plateform = rewindList.Peek().transform;
+                    ReplacePlayer(new Vector3(plateform.position.x, plateform.position.y + 2f, plateform.position.z));
+                }
+                
+            }
+            
         }
     }
 }
