@@ -97,7 +97,7 @@ MonoBehaviour:
   playerTransform: {fileID: 5096008610574653053}
   playerRigidbody: {fileID: 5096008610574653048}
   playerSpeed: 8
-  playerJump: 100
+  playerJump: 600
 --- !u!65 &5096008610574653049
 BoxCollider:
   m_ObjectHideFlags: 0

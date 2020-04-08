@@ -11,7 +11,9 @@ public class PlayerControleurScript : MonoBehaviour
     [SerializeField] private float playerJump;
 
     private Ray scanJump;
-    private Vector3 posRay;
+    private Vector3 posRayCentre;
+    private Vector3 posRayGauche;
+    private Vector3 posRayDroit;
     private bool canJump = true;
 
     public void ReplacePlayer(Vector3 position)
@@ -21,11 +23,46 @@ public class PlayerControleurScript : MonoBehaviour
 
     private void FixedUpdate()
     {
-        posRay = new Vector3(playerTransform.position.x, playerTransform.position.y - 0.5f, playerTransform.position.z);
+        posRayCentre = new Vector3(playerTransform.position.x, playerTransform.position.y - 0.5f, playerTransform.position.z);
+        posRayGauche = new Vector3(playerTransform.position.x - playerTransform.localScale.x / 2, playerTransform.position.y - 0.5f, playerTransform.position.z);
+        posRayDroit = new Vector3(playerTransform.position.x + playerTransform.localScale.x / 2, playerTransform.position.y - 0.5f, playerTransform.position.z);
 
-        if (Physics.Raycast(posRay, -playerTransform.up, 0.5f) && canJump == false)
+        if (!Physics.Raycast(posRayCentre, -playerTransform.up, 0.5f) && canJump == true)
+        {
+            canJump = false;
+        }
+        else
+        {
+            if (!Physics.Raycast(posRayGauche, -playerTransform.up, 0.5f) && canJump == true)
+            {
+                canJump = false;
+            }
+            else
+            {
+                if (!Physics.Raycast(posRayDroit, -playerTransform.up, 0.5f) && canJump == true)
+                {
+                    canJump = false;
+                }
+            }
+        }
+
+        if (Physics.Raycast(posRayCentre, -playerTransform.up, 0.5f) && canJump == false)
         {
             canJump = true;
+        }
+        else
+        {
+            if (Physics.Raycast(posRayGauche, -playerTransform.up, 0.5f) && canJump == false)
+            {
+                canJump = true;
+            }
+            else
+            {
+                if (Physics.Raycast(posRayDroit, -playerTransform.up, 0.5f) && canJump == false)
+                {
+                    canJump = true;
+                }
+            }
         }
     }
 
