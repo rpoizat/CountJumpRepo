@@ -307,7 +307,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &46262257
 Transform:
   m_ObjectHideFlags: 0
@@ -1558,7 +1558,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1213450455
 Transform:
   m_ObjectHideFlags: 0
@@ -3224,15 +3224,30 @@ PrefabInstance:
       propertyPath: RewindComponent
       value: 
       objectReference: {fileID: 975156195}
+    - target: {fileID: 5096008610574653050, guid: c1ff6a9032cfee643a3ae017e90d7851,
+        type: 3}
+      propertyPath: depart
+      value: 
+      objectReference: {fileID: 1689644516}
+    - target: {fileID: 5096008610574653050, guid: c1ff6a9032cfee643a3ae017e90d7851,
+        type: 3}
+      propertyPath: limiteSaut
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 5096008610574653050, guid: c1ff6a9032cfee643a3ae017e90d7851,
+        type: 3}
+      propertyPath: playerJump
+      value: 1200
+      objectReference: {fileID: 0}
     - target: {fileID: 5096008610574653053, guid: c1ff6a9032cfee643a3ae017e90d7851,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.15
+      value: -40.3
       objectReference: {fileID: 0}
     - target: {fileID: 5096008610574653053, guid: c1ff6a9032cfee643a3ae017e90d7851,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -17.3
+      value: -9.1
       objectReference: {fileID: 0}
     - target: {fileID: 5096008610574653053, guid: c1ff6a9032cfee643a3ae017e90d7851,
         type: 3}
