@@ -29,9 +29,9 @@ public class PlayerControleurScript : MonoBehaviour
 
     private void FixedUpdate()
     {
-        posRayCentre = new Vector3(playerTransform.position.x, playerTransform.position.y - 0.99f, playerTransform.position.z);
-        posRayGauche = new Vector3(playerTransform.position.x - playerTransform.localScale.x / 2, playerTransform.position.y - 0.99f, playerTransform.position.z);
-        posRayDroit = new Vector3(playerTransform.position.x + playerTransform.localScale.x / 2, playerTransform.position.y - 0.99f, playerTransform.position.z);
+        posRayCentre = new Vector3(playerTransform.position.x, playerTransform.position.y - 0.5f, playerTransform.position.z);
+        posRayGauche = new Vector3(playerTransform.position.x - playerTransform.localScale.x / 2, playerTransform.position.y - 0.5f, playerTransform.position.z);
+        posRayDroit = new Vector3(playerTransform.position.x + playerTransform.localScale.x / 2, playerTransform.position.y - 0.5f, playerTransform.position.z);
 
         if (!Physics.Raycast(posRayCentre, -playerTransform.up, 0.5f) && canJump == true)
         {
@@ -75,7 +75,18 @@ public class PlayerControleurScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        //si on dépasse des limites du terrain
+        if(transform.position.x < -45f)
+        {
+            transform.position = new Vector3(45f, transform.position.y, transform.position.z);
+        }
+        else
+        {
+            if(transform.position.x > 45)
+            {
+                transform.position = new Vector3(-45f, transform.position.y, transform.position.z);
+            }
+        }
 
         //avancer vers la droite
         if (Input.GetKey(KeyCode.RightArrow))
