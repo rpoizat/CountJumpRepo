@@ -5,6 +5,14 @@ using UnityEngine;
 
 public class PlayerControleurScript : MonoBehaviour
 {
+    [SerializeField] private int nbSaut;
+
+    [SerializeField] private int nbRewind;
+
+    [SerializeField] private int limiteSaut;
+
+    [SerializeField]
+    private Transform depart;
     [SerializeField] private Transform playerTransform;
     [SerializeField] private Rigidbody playerRigidbody;
     [SerializeField] private float playerSpeed;
@@ -99,8 +107,9 @@ public class PlayerControleurScript : MonoBehaviour
             playerTransform.Translate(-playerTransform.right * playerSpeed * Time.deltaTime);
         }
 
-        if(Input.GetKey(KeyCode.UpArrow) && canJump)
+        if(Input.GetKeyDown(KeyCode.UpArrow) && canJump && nbSaut != limiteSaut)
         {
+            nbSaut = nbSaut + 1;
             playerRigidbody.AddForce(playerTransform.up * playerJump, ForceMode.Acceleration);
             canJump = false;
             triggerRewind = true;
@@ -112,12 +121,17 @@ public class PlayerControleurScript : MonoBehaviour
 
             if (rewindList.Count > 0 )
             {
+                nbSaut = nbSaut - 1;
+
+                nbRewind = nbRewind + 1;
 
                 if (rewindList.Count == 1)
                 {
+
+                    rewindList.Pop();
                     Debug.Log("On tp");
-                    Transform plateform = rewindList.Peek().transform;
-                    ReplacePlayer(new Vector3(plateform.position.x, plateform.position.y + 2f, plateform.position.z));
+                    Transform plateform = depart;
+                    ReplacePlayer(new Vector3(plateform.position.x, plateform.position.y + plateform.localScale.y / 2 + 1f, plateform.position.z));
                 }
 
                 else
@@ -125,7 +139,7 @@ public class PlayerControleurScript : MonoBehaviour
                     rewindList.Pop();
                     Debug.Log("On tp");
                     Transform plateform = rewindList.Peek().transform;
-                    ReplacePlayer(new Vector3(plateform.position.x, plateform.position.y + 2f, plateform.position.z));
+                    ReplacePlayer(new Vector3(plateform.position.x, plateform.position.y + plateform.localScale.y / 2 +1f, plateform.position.z));
                 }
                 
             }
