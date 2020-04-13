@@ -15,6 +15,11 @@ public class BonusSaut : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        if(other.gameObject.name == "Joueur")
+        {
+            PlayerControleurScript joueur = other.GetComponent<PlayerControleurScript>();
+            joueur.AddJumps(nbSautBonus);
+        }
         gameObject.SetActive(false);
     }
 }
