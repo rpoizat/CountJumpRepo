@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 
 public class PlayerControleurScript : MonoBehaviour
@@ -19,6 +20,9 @@ public class PlayerControleurScript : MonoBehaviour
     [SerializeField] private float playerJump;
     [SerializeField]
     private RewindList RewindComponent;
+
+    [Header("Référence interface")]
+    [SerializeField] private Text info;
     private Stack<GameObject> rewindList;
 
     
@@ -84,15 +88,27 @@ public class PlayerControleurScript : MonoBehaviour
     void Update()
     {
         //si on dépasse des limites du terrain
-        if(transform.position.x < -45f)
+        if(transform.position.x < -50f)
         {
-            transform.position = new Vector3(45f, transform.position.y, transform.position.z);
+            transform.position = new Vector3(50f, transform.position.y, transform.position.z);
         }
         else
         {
-            if(transform.position.x > 45)
+            if(transform.position.x > 50f)
             {
-                transform.position = new Vector3(-45f, transform.position.y, transform.position.z);
+                transform.position = new Vector3(-50f, transform.position.y, transform.position.z);
+            }
+        }
+
+        if(transform.position.y < -26f)
+        {
+            transform.position = new Vector3(transform.position.x, 27f, transform.position.z);
+        }
+        else
+        {
+            if(transform.position.y > 27f)
+            {
+                transform.position = new Vector3(transform.position.x, -26f, transform.position.z);
             }
         }
 
@@ -107,12 +123,13 @@ public class PlayerControleurScript : MonoBehaviour
             playerTransform.Translate(-playerTransform.right * playerSpeed * Time.deltaTime);
         }
 
-        if(Input.GetKeyDown(KeyCode.UpArrow) && canJump && nbSaut != limiteSaut)
+        if(Input.GetKeyDown(KeyCode.UpArrow) && canJump && nbSaut < limiteSaut)
         {
             nbSaut = nbSaut + 1;
             playerRigidbody.AddForce(playerTransform.up * playerJump, ForceMode.Acceleration);
             canJump = false;
             triggerRewind = true;
+            
         }
 
         if (Input.GetKeyDown(KeyCode.R))
@@ -145,5 +162,39 @@ public class PlayerControleurScript : MonoBehaviour
             }
             
         }
+
+        //update de l'interface
+        info.text = "Sauts restants : " + (limiteSaut - nbSaut) + "\n Nombre de Rewind : " + nbRewind;
+    }
+
+    //modifier les propriétés du saut
+    public void setJumpSpeed(float value)
+    {
+        playerJump += value;
+    }
+
+    //définir la limite de saut
+    public void SetJumpLimit(int value)
+    {
+        limiteSaut = value;
+    }
+
+    public void AddJumps(int value)
+    {
+        limiteSaut += value;
+    }
+
+    public void AddSpeed(float value)
+    {
+        playerSpeed += value;
+    }
+
+    public void ResetCompteurs()
+    {
+        nbSaut = 0;
+        nbRewind = 0;
+        playerJump = 1200;
+        playerSpeed = 8;
+        RewindComponent.ResetStack();
     }
 }

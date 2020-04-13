@@ -17,5 +17,9 @@ public class RewindList : MonoBehaviour
     {
         return pilePlateform;
     }
-    
+
+    public void ResetStack()
+    {
+        pilePlateform.Clear();
+    }
 }
