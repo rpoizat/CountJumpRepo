@@ -82,9 +82,21 @@ public class PlayerControleurScript : MonoBehaviour
         }
         else
         {
-            if(transform.position.x > 45)
+            if(transform.position.x > 45f)
             {
                 transform.position = new Vector3(-45f, transform.position.y, transform.position.z);
+            }
+        }
+
+        if(transform.position.y < -26f)
+        {
+            transform.position = new Vector3(transform.position.x, 27f, transform.position.z);
+        }
+        else
+        {
+            if(transform.position.y > 27f)
+            {
+                transform.position = new Vector3(transform.position.x, -26f, transform.position.z);
             }
         }
 
@@ -131,5 +143,11 @@ public class PlayerControleurScript : MonoBehaviour
             }
             
         }
+    }
+
+    //modifier les propriétés du saut
+    public void setJumpSpeed(float value)
+    {
+        playerJump += value;
     }
 }
