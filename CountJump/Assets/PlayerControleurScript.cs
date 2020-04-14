@@ -160,6 +160,12 @@ public class PlayerControleurScript : MonoBehaviour
                 }
                 
             }
+
+            else
+            {
+                Transform plateform = depart;
+                ReplacePlayer(new Vector3(plateform.position.x, plateform.position.y + plateform.localScale.y / 2 + 1f, plateform.position.z));
+            }
             
         }
 
@@ -189,12 +195,14 @@ public class PlayerControleurScript : MonoBehaviour
         playerSpeed += value;
     }
 
-    public void ResetCompteurs()
+    public void ResetCompteurs(Transform g)
     {
         nbSaut = 0;
         nbRewind = 0;
         playerJump = 1200;
         playerSpeed = 8;
         RewindComponent.ResetStack();
+        depart = g;
+
     }
 }

@@ -14,7 +14,7 @@ public class InfoNiveauScript : MonoBehaviour
         gameObject.SetActive(true);
         joueur.ReplacePlayer(depart.transform.position + new Vector3(0f, 2f, 0f));
         joueur.SetJumpLimit(nbSauts);
-        joueur.ResetCompteurs();
+        joueur.ResetCompteurs(depart.transform);
 
         ActiverBonus();
     }
