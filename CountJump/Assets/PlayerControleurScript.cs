@@ -39,6 +39,11 @@ public class PlayerControleurScript : MonoBehaviour
         
     }
 
+    public Rigidbody getRigidBody()
+    {
+        return playerRigidbody;
+    }
+
     private void FixedUpdate()
     {
         posRayCentre = new Vector3(playerTransform.position.x, playerTransform.position.y - 0.5f, playerTransform.position.z);
