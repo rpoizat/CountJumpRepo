@@ -11,9 +11,16 @@ public class RewindTester : MonoBehaviour
 
     public void Start()
     {
-        rewindList = RewindComponent.getRewindList();
+        if(RewindComponent != null)
+        {
+            rewindList = RewindComponent.getRewindList();
+        }
     }
 
+    public void SetRewindComponent(RewindList r)
+    {
+        RewindComponent = r;
+    }
 
     private void OnTriggerEnter(Collider other)
     {

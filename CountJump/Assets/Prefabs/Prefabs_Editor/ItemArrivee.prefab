@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 5681548366660566693}
   - component: {fileID: 7990171996389537972}
   - component: {fileID: 2264427520852945425}
+  - component: {fileID: 5055079577902170408}
   m_Layer: 0
   m_Name: ItemArrivee
   m_TagString: Untagged
@@ -116,4 +117,30 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 7990171996389537972}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 11500000, guid: acdc09a7008d67f4f85ce0ea81f18883, type: 3}
+        m_MethodName: 
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 1
+--- !u!114 &5055079577902170408
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7728576869211260059}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: acdc09a7008d67f4f85ce0ea81f18883, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  button: {fileID: 2264427520852945425}
+  editor: {fileID: 0}
+  item: {fileID: 6597447478441247453, guid: 7a34422c7caecdc4c860224cc1588b38, type: 3}
