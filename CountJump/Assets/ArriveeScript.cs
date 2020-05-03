@@ -8,7 +8,7 @@ public class ArriveeScript : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if(collision.gameObject.name == "Joueur")
+        if(collision.gameObject.name == "Joueur" && tag != "custom")
         {
             gameManager.EndLevel();
         }

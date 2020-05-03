@@ -27,6 +27,8 @@ public class PlayerControleurScript : MonoBehaviour
 
     
     public bool triggerRewind;
+    [HideInInspector]
+    public bool EditMode = false;
     private Ray scanJump;
     private Vector3 posRayCentre;
     private Vector3 posRayGauche;
@@ -118,17 +120,17 @@ public class PlayerControleurScript : MonoBehaviour
         }
 
         //avancer vers la droite
-        if (Input.GetKey(KeyCode.RightArrow))
+        if (Input.GetKey(KeyCode.RightArrow) && !EditMode)
         {
             playerTransform.Translate(playerTransform.right * playerSpeed * Time.deltaTime);
         }
 
-        if(Input.GetKey(KeyCode.LeftArrow))
+        if(Input.GetKey(KeyCode.LeftArrow) && !EditMode)
         {
             playerTransform.Translate(-playerTransform.right * playerSpeed * Time.deltaTime);
         }
 
-        if(Input.GetKeyDown(KeyCode.UpArrow) && canJump && nbSaut < limiteSaut)
+        if(Input.GetKeyDown(KeyCode.UpArrow) && canJump && nbSaut < limiteSaut && !EditMode)
         {
             nbSaut = nbSaut + 1;
             playerRigidbody.AddForce(playerTransform.up * playerJump, ForceMode.Acceleration);
@@ -137,7 +139,7 @@ public class PlayerControleurScript : MonoBehaviour
             
         }
 
-        if (Input.GetKeyDown(KeyCode.R))
+        if (Input.GetKeyDown(KeyCode.R) && !EditMode)
         {
             rewindList = RewindComponent.getRewindList();
 
@@ -192,6 +194,7 @@ public class PlayerControleurScript : MonoBehaviour
 
     public void AddJumps(int value)
     {
+        Debug.Log("AJOUT SAUT");
         limiteSaut += value;
     }
 

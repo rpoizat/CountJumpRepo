@@ -16,6 +16,7 @@ public enum EtatEditor
     TWEAKPLAYERPOSITION,
     NOSELECT,
     SCALING,
+    TESTING
 }
 
 public class EditorManagerScript : MonoBehaviour
@@ -24,6 +25,7 @@ public class EditorManagerScript : MonoBehaviour
     [SerializeField] private GameObject interfaceEditor;
     [SerializeField] private GameObject content;
     [SerializeField] private RewindList RewindComponent;
+    [SerializeField] private Text infoEtat;
 
     [Header("Liste des items")]
     [SerializeField] private List<GameObject> listePrefabs;
@@ -37,8 +39,7 @@ public class EditorManagerScript : MonoBehaviour
     private GameObject currentItem = null;
     private GameObject rootGO;
     private GameObject scalingGO;
-    private GameObject bonusTweakGO;
-    
+    private GameObject bonusTweakGO;  
     
     //lancement du mode éditeur
     public void ActiverInterface()
@@ -59,9 +60,8 @@ public class EditorManagerScript : MonoBehaviour
         rootGO = new GameObject();
         rootGO.transform.position = new Vector3(0f, 0f, 30f);
         rootGO.name = "CustomLevel";
+        tweakNbSaut.EditMode = true;
     }
-
- 
 
     //définir l'item qui vient d'être sélectionné par l'utilisateur
     public void SetCurrentItem(GameObject g, TypeItem t)
@@ -95,7 +95,6 @@ public class EditorManagerScript : MonoBehaviour
     //update, gérer les clics en fonction de l'état
     private void Update()
     {
-
         switch(etat)
         {
             case EtatEditor.PLATEFORMESELECTED:
@@ -122,6 +121,11 @@ public class EditorManagerScript : MonoBehaviour
 
                         RewindTester rtester = item.GetComponent<RewindTester>();
                         rtester.SetRewindComponent(RewindComponent);
+
+                        if(item.GetComponent<ArriveeScript>() != null)
+                        {
+                            item.tag = "custom";
+                        }
 
                         currentItem = null;
                         etat = EtatEditor.SCALING;
@@ -152,7 +156,6 @@ public class EditorManagerScript : MonoBehaviour
                         currentItem = null;
                         bonusTweakGO = item;
                         etat = EtatEditor.TWEAKBONUSNBJUMP;
-                        Debug.Log("On passe en teawkBonus !" + etat);
                     }
                 }
                 break;
@@ -178,9 +181,6 @@ public class EditorManagerScript : MonoBehaviour
                         currentItem = null;
                         bonusTweakGO = item;
                         etat = EtatEditor.TWEAKBONUSPWJUMP;
-                        Debug.Log("On passe en teawkBonus !" + etat);
-
-
                     }
                 }
                 break;
@@ -207,8 +207,6 @@ public class EditorManagerScript : MonoBehaviour
                         currentItem = null;
                         bonusTweakGO = item;
                         etat = EtatEditor.TWEAKBONUSSPEED;
-                        Debug.Log("On passe en teawkBonus !" + etat);
-
                     }
                 }
                 break;
@@ -265,6 +263,8 @@ public class EditorManagerScript : MonoBehaviour
                 break;
 
             case EtatEditor.TWEAKBONUSPWJUMP:
+
+                bonusTweakGO.GetComponent<BonusJump>().SetPlayer(tweakNbSaut);
 
                 if (Input.GetKey(KeyCode.UpArrow))
                 {
@@ -325,7 +325,7 @@ public class EditorManagerScript : MonoBehaviour
                     playerTransform.position = new Vector3(playerTransform.position.x, playerTransform.position.y + 0.1f, playerTransform.position.z);
                 }
 
-                if (Input.GetKey(KeyCode.DownArrow) && tweakNbSaut.getlimiteSaut() > 0)
+                if (Input.GetKey(KeyCode.DownArrow))
                 {
                     playerTransform.position = new Vector3(playerTransform.position.x, playerTransform.position.y - 0.1f, playerTransform.position.z);
                 }
@@ -335,7 +335,7 @@ public class EditorManagerScript : MonoBehaviour
                     playerTransform.position = new Vector3(playerTransform.position.x - 0.1f, playerTransform.position.y, playerTransform.position.z);
                 }
 
-                if (Input.GetKey(KeyCode.DownArrow) && tweakNbSaut.getlimiteSaut() > 0)
+                if (Input.GetKey(KeyCode.RightArrow))
                 {
                     playerTransform.position = new Vector3(playerTransform.position.x + 0.1f, playerTransform.position.y, playerTransform.position.z);
                 }
@@ -345,6 +345,27 @@ public class EditorManagerScript : MonoBehaviour
                     etat = EtatEditor.NOSELECT;
 
                 }
+                break;
+
+            case EtatEditor.TESTING :
+
+                if(Input.GetKeyDown(KeyCode.Space))
+                {
+                    etat = EtatEditor.NOSELECT;
+                    tweakNbSaut.EditMode = true;
+                    tweakNbSaut.getRigidBody().isKinematic = true;
+                }
+                break;
+
+            default :
+
+                if (Input.GetKeyDown(KeyCode.Space) && etat == EtatEditor.NOSELECT && rootGO != null && etat == EtatEditor.NOSELECT)
+                {
+                    tweakNbSaut.EditMode = false;
+                    tweakNbSaut.getRigidBody().isKinematic = false;
+                    etat = EtatEditor.TESTING;
+                }
+
                 break;
         }
 
@@ -361,15 +382,75 @@ public class EditorManagerScript : MonoBehaviour
 
         }
 
-        if (Input.GetKeyDown(KeyCode.Space) && etat == EtatEditor.NOSELECT && rootGO != null && etat == EtatEditor.NOSELECT)
-        {
-            tweakNbSaut.getRigidBody().isKinematic = false;
-            Debug.Log("test du niveau édité enclanché !");
-        }
-
-        Debug.Log(etat);
-
-
+        UpdateInfoEtat();
     }
-    
+
+    private void UpdateInfoEtat()
+    {
+        switch(etat)
+        {
+            case EtatEditor.PLATEFORMESELECTED:
+                infoEtat.text = "Placement de plateforme";
+                infoEtat.color = Color.grey;
+                break;
+
+            case EtatEditor.BONUSNBJUMPSELECTED:
+                infoEtat.text = "Placement d'un bonus de nombre de saut";
+                infoEtat.color = Color.green;
+                break;
+
+            case EtatEditor.BONUSPWJUMPSELECTED:
+                infoEtat.text = "Placement d'un bonus de puissance de saut";
+                infoEtat.color = Color.magenta;
+                break;
+
+            case EtatEditor.BONUSSPEEDSELECTED:
+                infoEtat.text = "Placement d'un bonus de vitesse de déplacement";
+                infoEtat.color = Color.yellow;
+                break;
+
+            case EtatEditor.NOSELECT:
+                infoEtat.text = "En attente";
+                infoEtat.color = Color.white;
+                break;
+
+            case EtatEditor.SCALING:
+                infoEtat.text = "Redimensionnement";
+                infoEtat.color = Color.red;
+                break;
+
+            case EtatEditor.TESTING:
+                infoEtat.text = "Test en cours";
+                infoEtat.color = Color.blue;
+                break;
+
+            case EtatEditor.TWEAKPLAYERPOSITION:
+                infoEtat.text = "Paramétrage de la position de départ";
+                infoEtat.color = Color.black;
+                break;
+
+            case EtatEditor.TWEAKNBSAUT:
+                infoEtat.text = "Paramétrage de la limite de saut";
+                infoEtat.color = Color.black;
+                break;
+
+            case EtatEditor.TWEAKBONUSNBJUMP:
+                infoEtat.text = "Paramétrage de la valeur du bonus";
+                infoEtat.color = Color.green;
+                break;
+
+            case EtatEditor.TWEAKBONUSPWJUMP:
+                infoEtat.text = "Paramétrage de la valeur du bonus";
+                infoEtat.color = Color.magenta;
+                break;
+
+            case EtatEditor.TWEAKBONUSSPEED:
+                infoEtat.text = "Paramétrage de la valeur du bonus";
+                infoEtat.color = Color.yellow;
+                break;
+
+            default:
+                break;
+        }
+    }
 }
