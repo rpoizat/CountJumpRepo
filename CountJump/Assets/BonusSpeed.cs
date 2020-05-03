@@ -22,4 +22,15 @@ public class BonusSpeed : MonoBehaviour
             gameObject.SetActive(false);
         }
     }
+
+    public void setValueBonus(int laValeur)
+    {
+        speed = speed + laValeur;
+        Debug.Log("On augmente la valeur de la vitesse du bonus");
+    }
+
+    public void Update()
+    {
+        text.text = "+" + speed;
+    }
 }

@@ -22,4 +22,15 @@ public class BonusSaut : MonoBehaviour
         }
         gameObject.SetActive(false);
     }
+
+    public void setValueBonus(int laValeur)
+    {
+        nbSautBonus = nbSautBonus + laValeur;
+        Debug.Log("On augmente le nombre de saut du bonus");
+    }
+
+    public void Update()
+    {
+        text.text = "+" + nbSautBonus;
+    }
 }

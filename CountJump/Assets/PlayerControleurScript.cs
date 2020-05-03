@@ -210,4 +210,9 @@ public class PlayerControleurScript : MonoBehaviour
         depart = g;
 
     }
+
+    public int getlimiteSaut()
+    {
+        return limiteSaut;
+    }
 }

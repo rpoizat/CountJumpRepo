@@ -133,4 +133,4 @@ MonoBehaviour:
   button: {fileID: 3773477740271428001}
   editor: {fileID: 0}
   item: {fileID: 4140691886412944935, guid: 6a431c3e2a7a3a2488b0131b3be2b08c, type: 3}
-  type: 1
+  type: 3

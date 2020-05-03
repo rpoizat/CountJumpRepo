@@ -58,4 +58,6 @@ public class GameManagerScript : MonoBehaviour
         //afficher l'interface de l'éditeur
         editor.ActiverInterface();
     }
+
+    
 }

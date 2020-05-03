@@ -19,4 +19,15 @@ public class BonusJump : MonoBehaviour
         player.setJumpSpeed(newJumpSpeed);
         gameObject.SetActive(false);
     }
+
+    public void setValueBonus(int laValeur)
+    {
+        newJumpSpeed = newJumpSpeed + laValeur;
+        Debug.Log("On augmente la valeur de la force de saut du bonus");
+    }
+
+    public void Update()
+    {
+        text.text = "+" + newJumpSpeed;
+    }
 }

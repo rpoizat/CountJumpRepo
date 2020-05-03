@@ -3459,6 +3459,8 @@ MonoBehaviour:
   - {fileID: 4644233078063320875, guid: d04f41fabf6fd4f4191c5c664f7d1e9d, type: 3}
   - {fileID: 4644233078063320875, guid: ae48041bcd973f84395b212cb6a1ccb0, type: 3}
   - {fileID: 4644233078063320875, guid: c16f72364e1aad04892d036f70995338, type: 3}
+  tweakNbSaut: {fileID: 4881702}
+  playerTransform: {fileID: 1208353195}
 --- !u!4 &1550381733 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7277128143541391810, guid: 864b4dc237b3b014593e5cffa3b921cc,

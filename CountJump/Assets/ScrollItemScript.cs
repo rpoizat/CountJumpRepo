@@ -6,7 +6,9 @@ using UnityEngine.UI;
 public enum TypeItem
 {
     PLATEFORME,
-    BONUS
+    BONUSNBJUMP,
+    BONUSPWJUMP,
+    BONUSSPEED
 }
 
 public class ScrollItemScript : MonoBehaviour
