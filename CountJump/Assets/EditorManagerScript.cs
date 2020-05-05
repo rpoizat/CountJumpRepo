@@ -52,6 +52,7 @@ public class EditorManagerScript : MonoBehaviour
     [SerializeField] private GameObject bonusPwJumpPrefab;
     [SerializeField] private GameObject bonusNbJumpPrefab;
     [SerializeField] private GameObject playerPrefab;
+    [SerializeField] private int baseJumpLimit;
 
 
     //fonction de sauvegarde du menu custom
@@ -204,6 +205,7 @@ public class EditorManagerScript : MonoBehaviour
                         case "limiteNbSaut":
 
                         tweakNbSaut.SetJumpLimit(int.Parse(gameObjectInfo[1]));
+                        tweakNbSaut.setEditJumpLimite(tweakNbSaut.getlimiteSaut());
                         break;
 
                     }
@@ -237,6 +239,7 @@ public class EditorManagerScript : MonoBehaviour
         rootGO.transform.position = new Vector3(0f, 0f, 30f);
         rootGO.name = "CustomLevel";
         tweakNbSaut.EditMode = true;
+           
     }
 
     //définir l'item qui vient d'être sélectionné par l'utilisateur
@@ -481,10 +484,12 @@ public class EditorManagerScript : MonoBehaviour
                 if (Input.GetKeyDown(KeyCode.UpArrow))
                 {
                     tweakNbSaut.AddJumps(1);
+                    tweakNbSaut.setEditJumpLimite(tweakNbSaut.getlimiteSaut());
                 }
                 if (Input.GetKeyDown(KeyCode.DownArrow) && tweakNbSaut.getlimiteSaut() > 0)
                 {
                     tweakNbSaut.AddJumps(-1);
+                    tweakNbSaut.setEditJumpLimite(tweakNbSaut.getlimiteSaut());
                 }
                 if (Input.GetMouseButtonDown(0))
                 {
@@ -539,6 +544,10 @@ public class EditorManagerScript : MonoBehaviour
 
                         if (go.activeSelf == false) go.SetActive(true);
                     }
+                    Debug.Log(tweakNbSaut.getNbSaut());
+                    tweakNbSaut.setNbSaut(0);
+                    tweakNbSaut.SetJumpLimit(tweakNbSaut.getEditJumpLimite());
+                    
                 }
                 break;
 
@@ -549,7 +558,7 @@ public class EditorManagerScript : MonoBehaviour
                     tweakNbSaut.EditMode = false;
                     tweakNbSaut.getRigidBody().isKinematic = false;
                     etat = EtatEditor.TESTING;
-                    tweakNbSaut.setNbSaut(0);
+                    
                 }
 
                 break;

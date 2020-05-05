@@ -11,6 +11,7 @@ public class PlayerControleurScript : MonoBehaviour
     [SerializeField] private int nbRewind;
 
     [SerializeField] private int limiteSaut;
+    [SerializeField] private int editJumpLimite;
 
     [SerializeField]
     private Transform depart;
@@ -222,5 +223,22 @@ public class PlayerControleurScript : MonoBehaviour
     public void setNbSaut(int value)
     {
         nbSaut = value;
+    }
+
+    public int getNbSaut()
+    {
+        return nbSaut;
+    }
+
+    public void setEditJumpLimite(int value)
+    {
+        editJumpLimite = value;
+        
+    }
+
+    public int getEditJumpLimite()
+    {
+        return editJumpLimite;
+
     }
 }
