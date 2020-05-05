@@ -26,7 +26,11 @@ public class BonusSpeed : MonoBehaviour
     public void setValueBonus(int laValeur)
     {
         speed = speed + laValeur;
-        Debug.Log("On augmente la valeur de la vitesse du bonus");
+    }
+
+    public float getValueBonus()
+    {
+        return speed;
     }
 
     public void Update()

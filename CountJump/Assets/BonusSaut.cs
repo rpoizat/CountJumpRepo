@@ -26,7 +26,11 @@ public class BonusSaut : MonoBehaviour
     public void setValueBonus(int laValeur)
     {
         nbSautBonus = nbSautBonus + laValeur;
-        Debug.Log("On augmente le nombre de saut du bonus");
+    }
+
+    public int getValueBonus()
+    {
+        return nbSautBonus;
     }
 
     public void Update()

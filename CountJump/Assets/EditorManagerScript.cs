@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System.IO;
 
 public enum EtatEditor
 {
@@ -39,7 +40,71 @@ public class EditorManagerScript : MonoBehaviour
     private GameObject currentItem = null;
     private GameObject rootGO;
     private GameObject scalingGO;
-    private GameObject bonusTweakGO;  
+    private GameObject bonusTweakGO;
+
+    //fonction de sauvegarde du menu custom
+    public void SaveCustomLevel()
+    {
+        //création du fichier de sauvegarde dans le dossier Asset
+        var writer = File.CreateText(Application.dataPath.ToString() + "/saveCustom.txt");
+
+        //boucle sur chaque objet fils du gameobject racine
+        for (int i = 0; i < rootGO.transform.childCount; i++)
+        {
+            GameObject go = rootGO.transform.GetChild(i).gameObject;
+
+            //condition pour chaque composant du jeu on stock son nom:sa_position:son_scale(ou sa valeur dans le cas d'un bonus)
+            if(go.name.Contains("Depart"))
+            {
+                writer.WriteLine("start:" + go.transform.position.x + "_" + go.transform.position.y + "_" + go.transform.position.z
+                                + ":" + go.transform.localScale.x + "_" + go.transform.localScale.y + "_" + go.transform.localScale.z);
+            }
+            else
+            {
+                if(go.name.Contains("Arrivee"))
+                {
+                    writer.WriteLine("end:" + go.transform.position.x + "_" + go.transform.position.y + "_" + go.transform.position.z
+                                + ":" + go.transform.localScale.x + "_" + go.transform.localScale.y + "_" + go.transform.localScale.z);
+                }
+                else
+                {
+                    if(go.name.Contains("Plateforme"))
+                    {
+                        writer.WriteLine("plateforme:" + go.transform.position.x + "_" + go.transform.position.y + "_" + go.transform.position.z
+                                + ":" + go.transform.localScale.x + "_" + go.transform.localScale.y + "_" + go.transform.localScale.z);
+                    }
+                    else
+                    {
+                        if(go.name.Contains("Bonus5"))
+                        {
+                            writer.WriteLine("bonus5:" + go.transform.position.x + "_" + go.transform.position.y + "_" + go.transform.position.z
+                                + ":" + go.GetComponent<BonusSaut>().getValueBonus());
+                        }
+                        else
+                        {
+                            if(go.name.Contains("BonusJ"))
+                            {
+                                writer.WriteLine("BonusJ:" + go.transform.position.x + "_" + go.transform.position.y + "_" + go.transform.position.z
+                                + ":" + go.GetComponent<BonusJump>().getValueBonus());
+                            }
+                            else
+                            {
+                                if(go.name.Contains("BonusS"))
+                                {
+                                    writer.WriteLine("BonusS:" + go.transform.position.x + "_" + go.transform.position.y + "_" + go.transform.position.z
+                                    + ":" + go.GetComponent<BonusSpeed>().getValueBonus());
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        writer.WriteLine("player:" + tweakNbSaut.transform.position.x + "_" + tweakNbSaut.transform.position.y + "_" + tweakNbSaut.transform.position.z);
+
+        writer.Close();
+    }
     
     //lancement du mode éditeur
     public void ActiverInterface()
@@ -354,6 +419,14 @@ public class EditorManagerScript : MonoBehaviour
                     etat = EtatEditor.NOSELECT;
                     tweakNbSaut.EditMode = true;
                     tweakNbSaut.getRigidBody().isKinematic = true;
+
+                    //boucle sur chaque objet fils du gameobject racine pour réactiver les bonus ramassés
+                    for (int i = 0; i < rootGO.transform.childCount; i++)
+                    {
+                        GameObject go = rootGO.transform.GetChild(i).gameObject;
+
+                        if (go.activeSelf == false) go.SetActive(true);
+                    }
                 }
                 break;
 

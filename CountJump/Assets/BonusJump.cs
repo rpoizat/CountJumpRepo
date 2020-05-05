@@ -23,7 +23,11 @@ public class BonusJump : MonoBehaviour
     public void setValueBonus(int laValeur)
     {
         newJumpSpeed = newJumpSpeed + laValeur;
-        Debug.Log("On augmente la valeur de la force de saut du bonus");
+    }
+
+    public float getValueBonus()
+    {
+        return newJumpSpeed;
     }
 
     public void SetPlayer(PlayerControleurScript p)
