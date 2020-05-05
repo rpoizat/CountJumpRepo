@@ -114,6 +114,7 @@ public class EditorManagerScript : MonoBehaviour
         }
 
         writer.WriteLine("player:" + tweakNbSaut.transform.position.x + ":" + tweakNbSaut.transform.position.y + ":" + tweakNbSaut.transform.position.z);
+        writer.WriteLine("limiteNbSaut:" + tweakNbSaut.getlimiteSaut());
 
         writer.Close();
     }
@@ -199,6 +200,11 @@ public class EditorManagerScript : MonoBehaviour
                             BonusS.GetComponent<BonusSpeed>().instantiateValueBonus(int.Parse(gameObjectInfo[4]));
                             BonusS.transform.SetParent(rootGO.transform);
                             break;
+
+                        case "limiteNbSaut":
+
+                        tweakNbSaut.SetJumpLimit(int.Parse(gameObjectInfo[1]));
+                        break;
 
                     }
                 }
@@ -524,6 +530,7 @@ public class EditorManagerScript : MonoBehaviour
                     etat = EtatEditor.NOSELECT;
                     tweakNbSaut.EditMode = true;
                     tweakNbSaut.getRigidBody().isKinematic = true;
+                    tweakNbSaut.setNbSaut(0);
 
                     //boucle sur chaque objet fils du gameobject racine pour réactiver les bonus ramassés
                     for (int i = 0; i < rootGO.transform.childCount; i++)
@@ -542,6 +549,7 @@ public class EditorManagerScript : MonoBehaviour
                     tweakNbSaut.EditMode = false;
                     tweakNbSaut.getRigidBody().isKinematic = false;
                     etat = EtatEditor.TESTING;
+                    tweakNbSaut.setNbSaut(0);
                 }
 
                 break;

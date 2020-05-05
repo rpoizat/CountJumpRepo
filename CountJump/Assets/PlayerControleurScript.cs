@@ -218,4 +218,9 @@ public class PlayerControleurScript : MonoBehaviour
     {
         return limiteSaut;
     }
+
+    public void setNbSaut(int value)
+    {
+        nbSaut = value;
+    }
 }
