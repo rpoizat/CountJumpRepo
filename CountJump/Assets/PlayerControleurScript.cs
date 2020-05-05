@@ -215,6 +215,15 @@ public class PlayerControleurScript : MonoBehaviour
 
     }
 
+    public void ResetCompteursCustom()
+    {
+        nbSaut = 0;
+        nbRewind = 0;
+        playerJump = 1200;
+        playerSpeed = 8;
+        RewindComponent.ResetStack();
+    }
+
     public int getlimiteSaut()
     {
         return limiteSaut;

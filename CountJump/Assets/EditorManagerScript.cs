@@ -166,6 +166,12 @@ public class EditorManagerScript : MonoBehaviour
                             end.transform.position = new Vector3(float.Parse(gameObjectInfo[1]), float.Parse(gameObjectInfo[2]), float.Parse(gameObjectInfo[3]));
                             end.transform.localScale = new Vector3(float.Parse(gameObjectInfo[4]), float.Parse(gameObjectInfo[5]), float.Parse(gameObjectInfo[6]));
                             end.transform.SetParent(rootGO.transform);
+
+                            if (end.GetComponent<ArriveeScript>() != null)
+                            {
+                                end.tag = "custom";
+                            }
+
                             RewindTester rtesterEnd = end.GetComponent<RewindTester>();
                             rtesterEnd.SetRewindComponent(RewindComponent);
                             break;
@@ -239,6 +245,7 @@ public class EditorManagerScript : MonoBehaviour
         rootGO.transform.position = new Vector3(0f, 0f, 30f);
         rootGO.name = "CustomLevel";
         tweakNbSaut.EditMode = true;
+        tweakNbSaut.setEditJumpLimite(tweakNbSaut.getlimiteSaut());
            
     }
 
@@ -547,6 +554,7 @@ public class EditorManagerScript : MonoBehaviour
                     Debug.Log(tweakNbSaut.getNbSaut());
                     tweakNbSaut.setNbSaut(0);
                     tweakNbSaut.SetJumpLimit(tweakNbSaut.getEditJumpLimite());
+                    tweakNbSaut.ResetCompteursCustom();
                     
                 }
                 break;
