@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System.IO;
+using System.Collections.Generic;
+using System.Linq;
+using System;
 
 public enum EtatEditor
 {
@@ -42,6 +45,15 @@ public class EditorManagerScript : MonoBehaviour
     private GameObject scalingGO;
     private GameObject bonusTweakGO;
 
+    [SerializeField] private GameObject arrivePrefab;
+    [SerializeField] private GameObject departPrefab;
+    [SerializeField] private GameObject plateformePrefab;
+    [SerializeField] private GameObject bonusSpeedPrefab;
+    [SerializeField] private GameObject bonusPwJumpPrefab;
+    [SerializeField] private GameObject bonusNbJumpPrefab;
+    [SerializeField] private GameObject playerPrefab;
+
+
     //fonction de sauvegarde du menu custom
     public void SaveCustomLevel()
     {
@@ -56,42 +68,42 @@ public class EditorManagerScript : MonoBehaviour
             //condition pour chaque composant du jeu on stock son nom:sa_position:son_scale(ou sa valeur dans le cas d'un bonus)
             if(go.name.Contains("Depart"))
             {
-                writer.WriteLine("start:" + go.transform.position.x + "_" + go.transform.position.y + "_" + go.transform.position.z
-                                + ":" + go.transform.localScale.x + "_" + go.transform.localScale.y + "_" + go.transform.localScale.z);
+                writer.WriteLine("start:" + go.transform.position.x + ":" + go.transform.position.y + ":" + go.transform.position.z
+                                + ":" + go.transform.localScale.x + ":" + go.transform.localScale.y + ":" + go.transform.localScale.z);
             }
             else
             {
                 if(go.name.Contains("Arrivee"))
                 {
-                    writer.WriteLine("end:" + go.transform.position.x + "_" + go.transform.position.y + "_" + go.transform.position.z
-                                + ":" + go.transform.localScale.x + "_" + go.transform.localScale.y + "_" + go.transform.localScale.z);
+                    writer.WriteLine("end:" + go.transform.position.x + ":" + go.transform.position.y + ":" + go.transform.position.z
+                                + ":" + go.transform.localScale.x + ":" + go.transform.localScale.y + ":" + go.transform.localScale.z);
                 }
                 else
                 {
                     if(go.name.Contains("Plateforme"))
                     {
-                        writer.WriteLine("plateforme:" + go.transform.position.x + "_" + go.transform.position.y + "_" + go.transform.position.z
-                                + ":" + go.transform.localScale.x + "_" + go.transform.localScale.y + "_" + go.transform.localScale.z);
+                        writer.WriteLine("plateforme:" + go.transform.position.x + ":" + go.transform.position.y + ":" + go.transform.position.z
+                                + ":" + go.transform.localScale.x + ":" + go.transform.localScale.y + ":" + go.transform.localScale.z);
                     }
                     else
                     {
                         if(go.name.Contains("Bonus5"))
                         {
-                            writer.WriteLine("bonus5:" + go.transform.position.x + "_" + go.transform.position.y + "_" + go.transform.position.z
+                            writer.WriteLine("bonus5:" + go.transform.position.x + ":" + go.transform.position.y + ":" + go.transform.position.z
                                 + ":" + go.GetComponent<BonusSaut>().getValueBonus());
                         }
                         else
                         {
                             if(go.name.Contains("BonusJ"))
                             {
-                                writer.WriteLine("BonusJ:" + go.transform.position.x + "_" + go.transform.position.y + "_" + go.transform.position.z
+                                writer.WriteLine("BonusJ:" + go.transform.position.x + ":" + go.transform.position.y + ":" + go.transform.position.z
                                 + ":" + go.GetComponent<BonusJump>().getValueBonus());
                             }
                             else
                             {
                                 if(go.name.Contains("BonusS"))
                                 {
-                                    writer.WriteLine("BonusS:" + go.transform.position.x + "_" + go.transform.position.y + "_" + go.transform.position.z
+                                    writer.WriteLine("BonusS:" + go.transform.position.x + ":" + go.transform.position.y + ":" + go.transform.position.z
                                     + ":" + go.GetComponent<BonusSpeed>().getValueBonus());
                                 }
                             }
@@ -101,9 +113,102 @@ public class EditorManagerScript : MonoBehaviour
             }
         }
 
-        writer.WriteLine("player:" + tweakNbSaut.transform.position.x + "_" + tweakNbSaut.transform.position.y + "_" + tweakNbSaut.transform.position.z);
+        writer.WriteLine("player:" + tweakNbSaut.transform.position.x + ":" + tweakNbSaut.transform.position.y + ":" + tweakNbSaut.transform.position.z);
 
         writer.Close();
+    }
+
+    public void loadCustomLevel()
+    {
+        string path = Application.dataPath.ToString() + "/saveCustom.txt";
+
+        //Read the text from directly from the test.txt file
+      
+            // Create an instance of StreamReader to read from a file.
+            // The using statement also closes the StreamReader.
+            using (StreamReader sr = new StreamReader(path))
+            {
+                string line;
+            // Read and display lines from the file until the end of 
+            // the file is reached.
+                while ((line = sr.ReadLine()) != null)
+                {
+                    
+                    List<string> gameObjectInfo = line.Split(new char[] { ':' }).ToList();
+
+                    switch (gameObjectInfo[0])
+                    {
+                        case "plateforme":
+
+                            GameObject plateforme = Instantiate<GameObject>(plateformePrefab);
+                            plateforme.transform.position = new Vector3(float.Parse(gameObjectInfo[1]), float.Parse(gameObjectInfo[2]), float.Parse(gameObjectInfo[3]));
+                            plateforme.transform.localScale = new Vector3(float.Parse(gameObjectInfo[4]), float.Parse(gameObjectInfo[5]), float.Parse(gameObjectInfo[6]));
+                            plateforme.transform.SetParent(rootGO.transform);
+                            RewindTester rtester = plateforme.GetComponent<RewindTester>();
+                            rtester.SetRewindComponent(RewindComponent);
+                            break;
+
+                        case "start":
+
+                            GameObject start = Instantiate<GameObject>(departPrefab);
+                            start.transform.position = new Vector3(float.Parse(gameObjectInfo[1]), float.Parse(gameObjectInfo[2]), float.Parse(gameObjectInfo[3]));
+                            start.transform.localScale = new Vector3(float.Parse(gameObjectInfo[4]), float.Parse(gameObjectInfo[5]), float.Parse(gameObjectInfo[6]));
+                            start.transform.SetParent(rootGO.transform);
+                            RewindTester rtesterStart = start.GetComponent<RewindTester>();
+                            rtesterStart.SetRewindComponent(RewindComponent);
+                            break;
+
+                        case "end":
+
+                            GameObject end = Instantiate<GameObject>(arrivePrefab);
+                            end.transform.position = new Vector3(float.Parse(gameObjectInfo[1]), float.Parse(gameObjectInfo[2]), float.Parse(gameObjectInfo[3]));
+                            end.transform.localScale = new Vector3(float.Parse(gameObjectInfo[4]), float.Parse(gameObjectInfo[5]), float.Parse(gameObjectInfo[6]));
+                            end.transform.SetParent(rootGO.transform);
+                            RewindTester rtesterEnd = end.GetComponent<RewindTester>();
+                            rtesterEnd.SetRewindComponent(RewindComponent);
+                            break;
+
+                        case "player":
+
+                            
+                            playerPrefab.transform.position = new Vector3(float.Parse(gameObjectInfo[1]), float.Parse(gameObjectInfo[2]), float.Parse(gameObjectInfo[3]));
+                            break;
+
+                        case "bonus5":
+
+                            GameObject Bonus5 = Instantiate<GameObject>(bonusNbJumpPrefab);
+                            Bonus5.transform.position = new Vector3(float.Parse(gameObjectInfo[1]), float.Parse(gameObjectInfo[2]), float.Parse(gameObjectInfo[3]));
+                            Bonus5.GetComponent<BonusSaut>().instantiateValueBonus(int.Parse(gameObjectInfo[4]));
+                            Debug.Log(gameObjectInfo[4]);
+                            Bonus5.transform.SetParent(rootGO.transform);
+                            break;
+
+                        case "BonusJ":
+
+                            GameObject BonusJ = Instantiate<GameObject>(bonusPwJumpPrefab);
+                            BonusJ.transform.position = new Vector3(float.Parse(gameObjectInfo[1]), float.Parse(gameObjectInfo[2]), float.Parse(gameObjectInfo[3]));
+                            BonusJ.GetComponent<BonusJump>().instantiateValueBonus(int.Parse(gameObjectInfo[4]));
+                            BonusJ.transform.SetParent(rootGO.transform);
+                            BonusJ.GetComponent<BonusJump>().SetPlayer(playerPrefab.GetComponent<PlayerControleurScript>());
+                            break;
+
+                        case "BonusS":
+
+                            GameObject BonusS = Instantiate<GameObject>(bonusSpeedPrefab);
+                            BonusS.transform.position = new Vector3(float.Parse(gameObjectInfo[1]), float.Parse(gameObjectInfo[2]), float.Parse(gameObjectInfo[3]));
+                            BonusS.GetComponent<BonusSpeed>().instantiateValueBonus(int.Parse(gameObjectInfo[4]));
+                            BonusS.transform.SetParent(rootGO.transform);
+                            break;
+
+                    }
+                }
+            }
+
+                    
+
+
+
+
     }
     
     //lancement du mode éditeur

@@ -37,4 +37,9 @@ public class BonusSaut : MonoBehaviour
     {
         text.text = "+" + nbSautBonus;
     }
+
+    public void instantiateValueBonus(int laValeur)
+    {
+        nbSautBonus = laValeur;
+    }
 }

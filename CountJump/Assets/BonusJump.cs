@@ -35,6 +35,11 @@ public class BonusJump : MonoBehaviour
         player = p;
     }
 
+    public void instantiateValueBonus(int laValeur)
+    {
+        newJumpSpeed = laValeur;
+    }
+
     public void Update()
     {
         text.text = "+" + newJumpSpeed;

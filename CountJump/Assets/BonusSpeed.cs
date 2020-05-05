@@ -28,6 +28,11 @@ public class BonusSpeed : MonoBehaviour
         speed = speed + laValeur;
     }
 
+    public void instantiateValueBonus(int laValeur)
+    {
+        speed =  laValeur;
+    }
+
     public float getValueBonus()
     {
         return speed;
